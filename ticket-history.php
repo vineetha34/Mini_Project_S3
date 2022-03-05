@@ -19,7 +19,7 @@ if (strlen($_SESSION['uid']==0)) {
  <meta name="description" content="Insurance Management System in PHP and MySQL">
     <meta name="author" content="Sarita Pandey">
 
-    <title>Insurance Management System |  Manage Category</title>
+    <title>Insurance Management System |  Ticket History</title>
 
     <!-- vendor css -->
     <link href="../lib/fontawesome-free/css/all.min.css" rel="stylesheet">
@@ -45,8 +45,7 @@ if (strlen($_SESSION['uid']==0)) {
 
       <div class="az-content-header d-block d-md-flex">
         <div>
-          <h2 class="az-content-title mg-b-5 mg-b-lg-8">Insurance Managment System !</h2>
-          <hr />
+          <h2 class="az-content-title mg-b-5 mg-b-lg-8">Ticket History!</h2>
         </div>
        <!-- az-dashboard-header-right -->
       </div><!-- az-content-header -->
@@ -57,23 +56,48 @@ if (strlen($_SESSION['uid']==0)) {
       <div class="container">
         <div class="az-content-body">
           <div class="az-content-breadcrumb">
+            <span>Ticket History </span>
             
           </div>
   
 
-          
+          <div class="az-content-label mg-b-5">Ticket History Details</div>
 <p style="font-size:16px; color:red" align="center"> <?php if($msg){
     echo $msg;
   }  ?> </p>
-                  <?php
-$uid=$_SESSION['uid'];
-$ret=mysqli_query($con,"select FullName from tbluser where ID='$uid'");
-$row=mysqli_fetch_array($ret);
-$name=$row['FullName'];
+          <div class="table-responsive">
+            <table class="table table-bordered mg-b-0">
+              <thead>
+                <tr>
+                  <th>S.NO</th>
+                  <th>Subject</th>
+                  <th>Nature of Issue</th>
+                   <th>Ticket Generation Date</th>
+                   <th>Action</th>
+                </tr>
+              </thead>
+              <?php
+              $tid=$_SESSION['uid'];
+$ret=mysqli_query($con,"select * from tblticket where UserId=$tid");
+$cnt=1;
+while ($row=mysqli_fetch_array($ret)) {
 
 ?>
-          <div class="table-responsive" align="center">
-            <h2>Welcome back ! <span style="color:red"><?php echo $name;?></span></h2>
+              <tbody>
+                <tr>
+                  <td><?php echo $cnt;?></td>
+                       <td><?php  echo $row['Subject'];?></td>
+                  <td><?php  echo $row['NatureofIssue'];?></td>
+                  <td><?php  echo $row['TicketGenerationDate'];?></td>
+         
+                  <td><a href="ticket-view.php?ticid=<?php echo $row['ID'];?>">View Ticket Detail</a>
+                </tr>
+                <?php 
+$cnt=$cnt+1;
+}?>
+               
+              </tbody>
+            </table>
           </div>
 
             </div><!-- card-dashboard-five -->
